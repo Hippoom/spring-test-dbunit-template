@@ -1,0 +1,3 @@
+rootProject.name = 'spring-test-dbunit-template'
+include ':sample', ':lib'
+

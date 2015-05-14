@@ -1,0 +1,21 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+group = 'com.github.hippoom'
+version = "0.1"
+
+allprojects {
+
+    apply plugin: 'java'
+
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+
+    repositories {
+        mavenCentral()
+    }
+    buildscript {
+        repositories {
+            mavenCentral()
+        }
+    }
+}

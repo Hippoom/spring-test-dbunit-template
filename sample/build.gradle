@@ -1,0 +1,35 @@
+sourceSets {
+    test {
+        resources {
+            srcDir 'src/test/data'
+            srcDir 'src/test/sql'
+        }
+    }
+}
+
+dependencies {
+    //persistence
+    compile 'org.springframework:spring-orm:4.1.6.RELEASE'
+    compile 'org.hibernate:hibernate-core:4.3.8.Final'
+    compile 'org.apache.commons:commons-dbcp2:2.1'
+    compile 'com.h2database:h2:1.4.187'
+    testCompile 'com.github.springtestdbunit:spring-test-dbunit:1.2.1'
+    testCompile 'org.dbunit:dbunit:2.4.9'
+    testCompile('org.flywaydb.flyway-test-extensions:flyway-spring-test:3.2.1') {
+        exclude group: 'org.slf4j' //introducing multiple slf4j impl
+    }
+    testCompile 'org.modelmapper:modelmapper:0.7.4'
+
+
+
+    testCompile('junit:junit:4.12') {
+        exclude group: 'org.hamcrest'
+    }
+    testCompile 'org.hamcrest:hamcrest-library:1.3'
+}
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+    }
+}
