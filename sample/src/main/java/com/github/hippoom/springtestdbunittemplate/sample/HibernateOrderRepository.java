@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Repository
 @Transactional
 public class HibernateOrderRepository {
@@ -14,9 +12,9 @@ public class HibernateOrderRepository {
     private SessionFactory sessionFactory;
 
 
-    public Optional<Order> findByTrackingId(String trackingId) {
+    public Order findByTrackingId(String trackingId) {
         Order load = (Order) sessionFactory.getCurrentSession().byId(Order.class).load(trackingId);
-        return Optional.ofNullable(load);
+        return load;
     }
 
     public void store(Order order) {

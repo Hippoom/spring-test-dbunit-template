@@ -1,12 +1,9 @@
 package com.github.hippoom.springtestdbunittemplate.sample;
 
-import com.github.hippoom.springtestdbunittemplate.dataset.CreateTemplateDataSet;
 import com.github.hippoom.springtestdbunittemplate.dataset.CreateTemplateModifier;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
-import com.github.springtestdbunit.dataset.DataSetModifier;
-import org.dbunit.dataset.IDataSet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.modelmapper.ModelMapper;
@@ -21,8 +18,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import java.util.Optional;
 
 import static com.github.springtestdbunit.assertion.DatabaseAssertionMode.NON_STRICT_UNORDERED;
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
@@ -51,8 +46,8 @@ public class HibernateOrderRepositoryTest {
                 .execute(new TransactionCallback<Order>() {
                     @Override
                     public Order doInTransaction(TransactionStatus status) {
-                        final Optional<Order> orderMaybe = subject.findByTrackingId(trackingIdOfPrototype);
-                        return HibernateOrderRepositoryTest.this.clone(orderMaybe.get(), trackingIdOfToBeSaved);
+                        final Order prototype = subject.findByTrackingId(trackingIdOfPrototype);
+                        return HibernateOrderRepositoryTest.this.clone(prototype, trackingIdOfToBeSaved);
                     }
                 });
 
