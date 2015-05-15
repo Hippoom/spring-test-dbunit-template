@@ -41,43 +41,50 @@ artifacts {
     archives javadocJar
 }
 
-signing {
-    sign configurations.archives
+def publishStage() {
+    project.hasProperty('publishStage')? publishStage: false
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+if (publishStage()) {
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: sonatypeUsername, password: sonatypePassword)
-            }
+    signing {
+        sign configurations.archives
+    }
 
-            pom.project {
-                name 'spring-test-dbunit-template'
-                packaging 'jar'
-                description 'An extension to simplify CRUD test with spring-test-dbunit'
-                url 'https://github.com/Hippoom/spring-test-dbunit-template'
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-                scm {
-                    url 'scm:git@github.com:Hippoom/spring-test-dbunit-template.git'
-                    connection 'scm:git@github.com:Hippoom/spring-test-dbunit-template.git'
-                    developerConnection 'scm:git@github.com:Hippoom/spring-test-dbunit-template.git'
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
                 }
 
-                licenses {
-                    license {
-                        name 'The MIT License (MIT)'
-                        url 'https://github.com/Hippoom/spring-test-dbunit-template/blob/master/LICENSE'
-                        distribution 'repo'
+                pom.project {
+                    name 'spring-test-dbunit-template'
+                    packaging 'jar'
+                    description 'An extension to simplify CRUD test with spring-test-dbunit'
+                    url 'https://github.com/Hippoom/spring-test-dbunit-template'
+
+                    scm {
+                        url 'scm:git@github.com:Hippoom/spring-test-dbunit-template.git'
+                        connection 'scm:git@github.com:Hippoom/spring-test-dbunit-template.git'
+                        developerConnection 'scm:git@github.com:Hippoom/spring-test-dbunit-template.git'
                     }
-                }
 
-                developers {
-                    developer {
-                        id 'hippoom'
-                        name 'Yugang Zhou'
+                    licenses {
+                        license {
+                            name 'The MIT License (MIT)'
+                            url 'https://github.com/Hippoom/spring-test-dbunit-template/blob/master/LICENSE'
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'hippoom'
+                            name 'Yugang Zhou'
+                        }
                     }
                 }
             }
