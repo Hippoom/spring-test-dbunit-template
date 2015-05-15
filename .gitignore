@@ -9,3 +9,6 @@
 # mac
 **/.DS_Store
 
+# local
+gradle.properties
+

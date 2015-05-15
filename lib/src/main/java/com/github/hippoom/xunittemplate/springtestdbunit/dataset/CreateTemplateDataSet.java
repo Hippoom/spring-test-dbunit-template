@@ -1,4 +1,4 @@
-package com.github.hippoom.springtestdbunittemplate.dataset;
+package com.github.hippoom.xunittemplate.springtestdbunit.dataset;
 
 import org.dbunit.dataset.*;
 

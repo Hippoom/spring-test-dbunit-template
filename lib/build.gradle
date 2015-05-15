@@ -1,3 +1,6 @@
+apply plugin: 'maven'
+apply plugin: 'signing'
+
 dependencies {
     //persistence
     compile 'com.github.springtestdbunit:spring-test-dbunit:1.2.1'
@@ -13,5 +16,71 @@ dependencies {
 test {
     testLogging {
         events "passed", "skipped", "failed", "standardOut", "standardError"
+    }
+}
+
+jar {
+    archiveName "${rootProject.name}-${rootProject.version}.jar"
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveName "${rootProject.name}-${rootProject.version}-javadoc.jar"
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    archiveName "${rootProject.name}-${rootProject.version}-sources.jar"
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+artifacts {
+    archives jar
+    archives sourcesJar
+    archives javadocJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+
+            pom.project {
+                name 'spring-test-dbunit-template'
+                packaging 'jar'
+                description 'An extension to simplify CRUD test with spring-test-dbunit'
+                url 'https://github.com/Hippoom/spring-test-dbunit-template'
+
+                scm {
+                    url 'scm:git@github.com:Hippoom/spring-test-dbunit-template.git'
+                    connection 'scm:git@github.com:Hippoom/spring-test-dbunit-template.git'
+                    developerConnection 'scm:git@github.com:Hippoom/spring-test-dbunit-template.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The MIT License (MIT)'
+                        url 'https://github.com/Hippoom/spring-test-dbunit-template/blob/master/LICENSE'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'hippoom'
+                        name 'Yugang Zhou'
+                    }
+                }
+            }
+        }
     }
 }

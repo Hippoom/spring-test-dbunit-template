@@ -1,6 +1,6 @@
 package com.github.hippoom.springtestdbunittemplate.sample;
 
-import com.github.hippoom.springtestdbunittemplate.dataset.CreateTemplateModifier;
+import com.github.hippoom.xunittemplate.springtestdbunit.dataset.CreateTemplateModifier;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
