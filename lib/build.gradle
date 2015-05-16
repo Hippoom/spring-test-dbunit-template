@@ -61,7 +61,11 @@ if (publishStage()) {
                 }
 
                 pom.project {
-                    name 'spring-test-dbunit-template'
+                    groupId rootProject.group
+                    artifactId rootProject.name
+                    version rootProject.version
+
+                    name rootProject.name
                     packaging 'jar'
                     description 'An extension to simplify CRUD test with spring-test-dbunit'
                     url 'https://github.com/Hippoom/spring-test-dbunit-template'
