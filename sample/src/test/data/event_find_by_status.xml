@@ -1,0 +1,6 @@
+<dataset>
+    <t_event id="5" name="mismatch_1" status="D"/>
+    <t_event id="6" name="match_1" status="A"/>
+    <t_event id="7" name="match_2" status="A"/>
+    <t_event id="8" name="match_3" status="A"/>
+</dataset>
