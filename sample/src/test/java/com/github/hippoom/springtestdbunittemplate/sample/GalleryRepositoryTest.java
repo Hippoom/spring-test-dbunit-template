@@ -59,7 +59,7 @@ public class GalleryRepositoryTest extends BaseRepositoryTest {
         });
     }
 
-    private void cloneFrom(Gallery prototype, Gallery toBeUpdated) {
+    private void cloneFrom(final Gallery prototype, final Gallery toBeUpdated) {
         getModelMapper().addMappings(new PropertyMap<Gallery, Gallery>() {
             @Override
             protected void configure() {
@@ -71,7 +71,7 @@ public class GalleryRepositoryTest extends BaseRepositoryTest {
         getModelMapper().map(new Gallery(), toBeUpdated);
     }
 
-    private Gallery cloneFrom(final String toBeSavedId, Gallery prototype) {
+    private Gallery cloneFrom(final String toBeSavedId, final Gallery prototype) {
 
         final Event event = eventRepository.findOne(toBeSavedId);
 

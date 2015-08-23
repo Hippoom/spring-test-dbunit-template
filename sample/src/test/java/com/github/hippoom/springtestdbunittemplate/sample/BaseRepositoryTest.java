@@ -29,7 +29,7 @@ import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
         FlywayTestExecutionListener.class
 })
 @FlywayTest(invokeCleanDB = false)
-public class BaseRepositoryTest {
+public abstract class BaseRepositoryTest {
         protected ModelMapper modelMapper;
         @Autowired
         protected PlatformTransactionManager txManager;
