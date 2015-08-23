@@ -1,0 +1,24 @@
+<dataset>
+    <t_event id="13" name="gallery_query_match_1" status="D"/>
+    <t_event id="14" name="gallery_query_2" status="A"/>
+    <t_event id="15" name="gallery_query_match_2" status="D"/>
+    <t_event id="16" name="gallery_query_match_3" status="D"/>
+
+    <t_gallery id="13" event_id="13"/>
+    <t_gallery id="14" event_id="14"/>
+    <t_gallery id="15" event_id="15"/>
+    <t_gallery id="16" event_id="16"/>
+
+    <t_gallery_cover gallery_id="13" file_name="a.jpg" />
+    <t_gallery_cover gallery_id="13" file_name="b.jpg" />
+
+    <t_gallery_cover gallery_id="14" file_name="a.jpg" />
+    <t_gallery_cover gallery_id="14" file_name="b.jpg" />
+
+    <t_gallery_cover gallery_id="15" file_name="a.jpg" />
+    <t_gallery_cover gallery_id="15" file_name="b.jpg" />
+
+    <t_gallery_cover gallery_id="16" file_name="a.jpg" />
+    <t_gallery_cover gallery_id="16" file_name="b.jpg" />
+
+</dataset>

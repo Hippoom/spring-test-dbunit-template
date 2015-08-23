@@ -21,7 +21,7 @@ import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 @ContextConfiguration(classes = {
         PersistenceConfig.class,
         FlywayConfig.class,
-        EventRepository.class
+        GalleryRepositoryImpl.class
 })
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,

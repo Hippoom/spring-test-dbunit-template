@@ -9,7 +9,11 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
+import java.util.List;
+
 import static com.github.springtestdbunit.assertion.DatabaseAssertionMode.NON_STRICT_UNORDERED;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 
 public class GalleryRepositoryTest extends BaseRepositoryTest {
@@ -57,6 +61,16 @@ public class GalleryRepositoryTest extends BaseRepositoryTest {
                 cloneFrom(prototype, toBeUpdated);
             }
         });
+    }
+
+    @DatabaseSetup("classpath:gallery_find_by_event_status.xml")
+    @Test
+    public void whenFindByStatus_itShouldFetchEventToAvoidNPlusOneQuery() throws Exception {
+
+        final List<Gallery> found = subject.byEventStatus(Event.Status.DONE);
+
+        assertThat(found.size(), is(3));
+
     }
 
     private void cloneFrom(final Gallery prototype, final Gallery toBeUpdated) {

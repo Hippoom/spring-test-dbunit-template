@@ -10,7 +10,7 @@ public class Gallery {
     @Id
     private String id;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(
             name = "event_id",
             nullable = false

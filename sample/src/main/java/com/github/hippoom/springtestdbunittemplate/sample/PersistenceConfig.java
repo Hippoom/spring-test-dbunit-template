@@ -3,6 +3,7 @@ package com.github.hippoom.springtestdbunittemplate.sample;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -19,9 +20,13 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 @Configuration
 @PropertySource(value = "classpath:datasource.properties")
-@EnableJpaRepositories({
-        "com.github.hippoom"
-})
+@EnableJpaRepositories(
+        basePackages = {
+                "com.github.hippoom"
+        },
+        repositoryImplementationPostfix = "Impl"
+)
+@ComponentScan("com.github.hippoom")
 public class PersistenceConfig {
 
     @Autowired
@@ -60,4 +65,6 @@ public class PersistenceConfig {
         txManager.setEntityManagerFactory(entityManagerFactory);
         return txManager;
     }
+
+
 }
