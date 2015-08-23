@@ -70,7 +70,9 @@ public class GalleryRepositoryTest extends BaseRepositoryTest {
         final List<Gallery> found = subject.byEventStatus(Event.Status.DONE);
 
         assertThat(found.size(), is(3));
+        assertThat(found.get(0).getId(), is("13")); // verify sorting
 
+        assertThat(found.get(0).getEvent().getId(), is("13")); //verify fetching strategy
     }
 
     private void cloneFrom(final Gallery prototype, final Gallery toBeUpdated) {

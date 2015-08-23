@@ -6,6 +6,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "t_gallery")
+@NamedEntityGraph(
+        name = "Gallery.event",
+        attributeNodes = {
+                @NamedAttributeNode("event")
+        }
+)
 public class Gallery {
     @Id
     private String id;
