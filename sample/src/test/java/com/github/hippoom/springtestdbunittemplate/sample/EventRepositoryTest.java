@@ -1,6 +1,7 @@
 package com.github.hippoom.springtestdbunittemplate.sample;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import org.junit.Test;
 import org.modelmapper.PropertyMap;
@@ -21,16 +22,16 @@ public class EventRepositoryTest extends BaseRepositoryTest {
     @Autowired
     private EventRepository subject;
 
-    @DatabaseSetup("classpath:event_save_prototype.xml")
+    @DatabaseSetup("before:classpath:event_save.xml")
     @ExpectedDatabase(
-            value = "classpath:event_save_expect.xml",
+            value = "after:classpath:event_save.xml",
             assertionMode = NON_STRICT_UNORDERED
     )
     @Test
     public void whenSave_() throws Exception {
 
         final Event prototype = subject.findOne("1");
-        final Event toBeSaved = cloneFrom("2", "event_save_actual", prototype);
+        final Event toBeSaved = cloneFrom("2", "event_save_subject", prototype);
 
         subject.save(toBeSaved);
     }

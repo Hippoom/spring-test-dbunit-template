@@ -43,9 +43,9 @@ public class GalleryRepositoryTest extends BaseRepositoryTest {
         subject.save(toBeSaved);
     }
 
-    @DatabaseSetup("classpath:gallery_update_before.xml")
+    @DatabaseSetup("before:classpath:gallery_update.xml")
     @ExpectedDatabase(
-            value = "classpath:gallery_update_after.xml",
+            value = "after:classpath:gallery_update.xml",
             assertionMode = NON_STRICT_UNORDERED
     )
     @Test

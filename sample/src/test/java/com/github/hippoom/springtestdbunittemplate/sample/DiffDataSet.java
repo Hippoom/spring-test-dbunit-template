@@ -5,10 +5,7 @@ import org.dbunit.dataset.IDataSet;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -80,10 +77,6 @@ public class DiffDataSet extends FlatXmlDataSetLoader {
             final NodeList added = ((Element) after).getElementsByTagName("added").item(0).getChildNodes();
 
 
-
-
-
-
             NodeList tables = before.item(0).getChildNodes();
 
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -109,6 +102,44 @@ public class DiffDataSet extends FlatXmlDataSetLoader {
                     dataset.appendChild(n);
                 }
             }
+
+
+            final Node deletedMaybe = ((Element) after).getElementsByTagName("deleted").item(0);
+            if (deletedMaybe != null) {
+                final NodeList deleted = deletedMaybe.getChildNodes();
+                for (int i = 0; i < deleted.getLength(); i++) {
+                    Node node = deleted.item(i);
+                    if (node.getNodeType() == Node.ELEMENT_NODE) {
+                        final String tableName = node.getNodeName();
+
+                        final NodeList tableRows = dataset.getElementsByTagName(tableName);
+
+                        for (int j = 0; j < tableRows.getLength(); j++) {
+                            final Node row = tableRows.item(j);
+                            boolean match = true;
+
+                            if (row.getNodeType() == Node.ELEMENT_NODE) {
+                                final NamedNodeMap attributes = row.getAttributes();
+
+                                final NamedNodeMap attributes1 = node.getAttributes();
+
+                                for (int k = 0; k < attributes1.getLength(); k++) {
+
+                                    final Node attr1 = attributes1.item(k);
+                                    if (!attr1.getNodeValue().equals(attributes.getNamedItem(attr1.getNodeName()).getNodeValue())) {
+                                        match = false;
+                                    }
+                                }
+                                if (match == true) {
+                                    dataset.removeChild(row);
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+
 
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
