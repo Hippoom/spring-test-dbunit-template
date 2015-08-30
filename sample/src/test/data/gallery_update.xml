@@ -1,0 +1,23 @@
+<dataset>
+    <before>
+        <t_event id="11" name="gallery_update_prototype" status="D"/>
+        <t_event id="12" name="gallery_update_actual" status="A"/>
+
+        <t_gallery id="11" event_id="11"/>
+        <t_gallery id="12" event_id="12"/>
+
+        <t_gallery_cover gallery_id="11" file_name="a.jpg"/>
+        <t_gallery_cover gallery_id="11" file_name="b.jpg"/>
+
+        <t_gallery_cover gallery_id="12" file_name="c.jpg"/>
+    </before>
+    <after>
+        <deleted>
+            <t_gallery_cover gallery_id="12" file_name="c.jpg"/>
+        </deleted>
+        <added>
+            <t_gallery_cover gallery_id="12" file_name="a.jpg"/>
+            <t_gallery_cover gallery_id="12" file_name="b.jpg" />
+        </added>
+    </after>
+</dataset>

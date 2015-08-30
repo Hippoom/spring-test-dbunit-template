@@ -1,0 +1,10 @@
+<dataset>
+    <before>
+        <t_event id="3" name="event_update_prototype" status="D"/>
+        <t_event id="4" name="event_update_subject" status="A"/>
+    </before>
+
+    <modified>
+        <t_event id="4" status="D"/>
+    </modified>
+</dataset>
