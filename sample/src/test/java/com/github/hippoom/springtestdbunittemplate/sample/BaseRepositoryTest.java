@@ -1,6 +1,8 @@
 package com.github.hippoom.springtestdbunittemplate.sample;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.flywaydb.test.annotation.FlywayTest;
 import org.flywaydb.test.junit.FlywayTestExecutionListener;
 import org.junit.Before;
@@ -29,25 +31,26 @@ import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
         FlywayTestExecutionListener.class
 })
 @FlywayTest(invokeCleanDB = false)
+@DatabaseSetup(value = "classpath:all.xml", type = DatabaseOperation.DELETE_ALL)
 public abstract class BaseRepositoryTest {
-        protected ModelMapper modelMapper;
-        @Autowired
-        protected PlatformTransactionManager txManager;
+    protected ModelMapper modelMapper;
+    @Autowired
+    protected PlatformTransactionManager txManager;
 
-        @Before
-        public void setUp() throws Exception {
-            modelMapper = new ModelMapper();
-                getModelMapper().getConfiguration()
-                        .setFieldMatchingEnabled(true)
-                        .setFieldAccessLevel(PRIVATE);
+    @Before
+    public void setUp() throws Exception {
+        modelMapper = new ModelMapper();
+        getModelMapper().getConfiguration()
+                .setFieldMatchingEnabled(true)
+                .setFieldAccessLevel(PRIVATE);
 
-        }
+    }
 
-        protected ModelMapper getModelMapper() {
-            return modelMapper;
-        }
+    protected ModelMapper getModelMapper() {
+        return modelMapper;
+    }
 
-        protected TransactionTemplate newTransactionTemplate() {
-            return new TransactionTemplate(txManager);
-        }
+    protected TransactionTemplate newTransactionTemplate() {
+        return new TransactionTemplate(txManager);
+    }
 }
