@@ -1,0 +1,15 @@
+<dataset>
+    <before>
+        <t_event id="17" name="gallery_photo_save" status="D"/>
+
+        <t_gallery id="17" event_id="17"/>
+
+        <t_gallery_photo id="1" gallery_id="17" file_name="a.jpg"/>
+
+    </before>
+    <after>
+        <added>
+            <t_gallery_photo id="2" gallery_id="17" file_name="b.jpg"/>
+        </added>
+    </after>
+</dataset>

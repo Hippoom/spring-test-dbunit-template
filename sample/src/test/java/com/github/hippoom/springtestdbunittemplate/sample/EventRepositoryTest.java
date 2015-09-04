@@ -36,9 +36,9 @@ public class EventRepositoryTest extends BaseRepositoryTest {
         subject.save(toBeSaved);
     }
 
-    @DatabaseSetup("classpath:event_update_before.xml")
+    @DatabaseSetup("before:classpath:event_update.xml")
     @ExpectedDatabase(
-            value = "classpath:event_update_after.xml",
+            value = "after:classpath:event_update.xml",
             assertionMode = NON_STRICT_UNORDERED
     )
     @Test

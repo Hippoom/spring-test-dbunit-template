@@ -4,7 +4,9 @@
         <t_event id="4" name="event_update_subject" status="A"/>
     </before>
 
-    <modified>
-        <t_event id="4" status="D"/>
-    </modified>
+    <after>
+        <modified pk="id">
+            <t_event id="4" status="D"/>
+        </modified>
+    </after>
 </dataset>
