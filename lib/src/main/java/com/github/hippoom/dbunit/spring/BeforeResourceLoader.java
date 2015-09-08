@@ -1,5 +1,6 @@
-package com.github.hippoom.springtestdbunittemplate.sample;
+package com.github.hippoom.dbunit.spring;
 
+import com.github.hippoom.dbunit.spring.ResourceWrapper;
 import org.springframework.core.io.ClassRelativeResourceLoader;
 import org.springframework.core.io.Resource;
 

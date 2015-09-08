@@ -1,5 +1,6 @@
 package com.github.hippoom.springtestdbunittemplate.sample;
 
+import com.github.hippoom.dbunit.dataset.DiffDataSet;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;

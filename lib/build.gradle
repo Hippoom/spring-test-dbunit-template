@@ -1,11 +1,22 @@
 apply plugin: 'maven'
 apply plugin: 'signing'
 
+sourceSets {
+    test {
+        resources {
+            srcDir 'src/test/data'
+        }
+    }
+}
+
 dependencies {
     //persistence
     compile 'com.github.springtestdbunit:spring-test-dbunit:1.2.1'
     compile 'org.dbunit:dbunit:2.4.9'
     compile 'org.springframework:spring-test:4.1.6.RELEASE'
+    compile 'dom4j:dom4j:1.6.1'
+    compile 'jaxen:jaxen:1.1.6'
+
 
     testCompile('junit:junit:4.12') {
         exclude group: 'org.hamcrest'

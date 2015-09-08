@@ -1,4 +1,4 @@
-package com.github.hippoom.springtestdbunittemplate.sample;
+package com.github.hippoom.dbunit.spring;
 
 import org.springframework.core.io.Resource;
 
