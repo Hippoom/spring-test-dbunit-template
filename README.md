@@ -3,7 +3,7 @@
 An extension to simplify CRUD test with [spring-test-dbunit](http://springtestdbunit.github.io/spring-test-dbunit)
 
 ## Latest Release
-* __0.0.1__
+* __0.1.1__
 
 You can download the binary at maven central repository:
 
