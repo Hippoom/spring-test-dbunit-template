@@ -1,6 +1,6 @@
 package com.github.hippoom.springtestdbunittemplate.sample;
 
-import com.github.hippoom.dbunit.dataset.DiffDataSet;
+import com.github.hippoom.springtestdbunit.dataset.GivenWhenThenFlatXmlDataSetLoader;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
@@ -33,7 +33,7 @@ import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
         FlywayTestExecutionListener.class
 })
 @FlywayTest(invokeCleanDB = false)
-@DbUnitConfiguration(dataSetLoader = DiffDataSet.class)
+@DbUnitConfiguration(dataSetLoader = GivenWhenThenFlatXmlDataSetLoader.class)
 @DatabaseSetup(value = "classpath:all.xml", type = DatabaseOperation.DELETE_ALL)
 public abstract class BaseRepositoryTest {
     protected ModelMapper modelMapper;

@@ -1,4 +1,4 @@
-package com.github.hippoom.dbunit.dataset;
+package com.github.hippoom.springtestdbunit.dataset;
 
 import com.github.springtestdbunit.dataset.FlatXmlDataSetLoader;
 import org.dbunit.dataset.IDataSet;
@@ -24,7 +24,7 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-public class DiffDataSet extends FlatXmlDataSetLoader {
+public class GivenWhenThenFlatXmlDataSetLoader extends FlatXmlDataSetLoader {
 
     private static final String GIVEN = "given";
     private static final String THEN = "then";
@@ -68,9 +68,7 @@ public class DiffDataSet extends FlatXmlDataSetLoader {
             final String path = getFilePathFor(resource, suffixWith(THEN));
             writeXml(path, afterXml);
             return super.createDataSet(new FileSystemResource(path));
-        } else
-
-        {
+        } else {
             return super.createDataSet(resource);
         }
 
@@ -223,11 +221,8 @@ public class DiffDataSet extends FlatXmlDataSetLoader {
 
     /**
      * With the built-in {@link Resource}, it is not possible to differ
-     * <p/>
      * the incoming resource is used for setup or verification.
-     * <p/>
      * With this customized {@link org.springframework.core.io.ResourceLoader}, one can inject some meta data to the resource
-     * <p/>
      * and get it by using {@link Resource#getDescription()}
      */
     public static class ResourceLoader extends ClassRelativeResourceLoader {
