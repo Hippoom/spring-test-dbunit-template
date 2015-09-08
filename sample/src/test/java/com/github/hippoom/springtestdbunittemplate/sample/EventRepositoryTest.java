@@ -22,9 +22,9 @@ public class EventRepositoryTest extends BaseRepositoryTest {
     @Autowired
     private EventRepository subject;
 
-    @DatabaseSetup("before:classpath:event_save.xml")
+    @DatabaseSetup("given:classpath:event_save.xml")
     @ExpectedDatabase(
-            value = "after:classpath:event_save.xml",
+            value = "then:classpath:event_save.xml",
             assertionMode = NON_STRICT_UNORDERED
     )
     @Test
@@ -36,9 +36,9 @@ public class EventRepositoryTest extends BaseRepositoryTest {
         subject.save(toBeSaved);
     }
 
-    @DatabaseSetup("before:classpath:event_update.xml")
+    @DatabaseSetup("given:classpath:event_update.xml")
     @ExpectedDatabase(
-            value = "after:classpath:event_update.xml",
+            value = "then:classpath:event_update.xml",
             assertionMode = NON_STRICT_UNORDERED
     )
     @Test

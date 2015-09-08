@@ -24,9 +24,9 @@ public class GalleryRepositoryTest extends BaseRepositoryTest {
     @Autowired
     private EventRepository eventRepository;
 
-    @DatabaseSetup("classpath:gallery_save_before.xml")
+    @DatabaseSetup("given:classpath:gallery_save.xml")
     @ExpectedDatabase(
-            value = "classpath:gallery_save_after.xml",
+            value = "then:classpath:gallery_save.xml",
             assertionMode = NON_STRICT_UNORDERED
     )
     @Test
@@ -43,9 +43,9 @@ public class GalleryRepositoryTest extends BaseRepositoryTest {
         subject.save(toBeSaved);
     }
 
-    @DatabaseSetup("before:classpath:gallery_update.xml")
+    @DatabaseSetup("given:classpath:gallery_update.xml")
     @ExpectedDatabase(
-            value = "after:classpath:gallery_update.xml",
+            value = "then:classpath:gallery_update.xml",
             assertionMode = NON_STRICT_UNORDERED
     )
     @Test

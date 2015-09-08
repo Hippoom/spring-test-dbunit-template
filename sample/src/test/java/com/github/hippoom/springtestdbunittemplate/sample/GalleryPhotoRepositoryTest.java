@@ -16,9 +16,9 @@ public class GalleryPhotoRepositoryTest extends BaseRepositoryTest {
     @Autowired
     private GalleryPhotoRepository subject;
 
-    @DatabaseSetup("before:classpath:gallery_photo_save.xml")
+    @DatabaseSetup("given:classpath:gallery_photo_save.xml")
     @ExpectedDatabase(
-            value = "after:classpath:gallery_photo_save.xml",
+            value = "then:classpath:gallery_photo_save.xml",
             assertionMode = NON_STRICT_UNORDERED
     )
     @Test

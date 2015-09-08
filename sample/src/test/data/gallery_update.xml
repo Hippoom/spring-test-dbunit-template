@@ -1,5 +1,5 @@
 <dataset>
-    <before>
+    <given>
         <t_event id="11" name="gallery_update_prototype" status="D"/>
         <t_event id="12" name="gallery_update_actual" status="A"/>
 
@@ -10,8 +10,8 @@
         <t_gallery_cover gallery_id="11" file_name="b.jpg"/>
 
         <t_gallery_cover gallery_id="12" file_name="c.jpg"/>
-    </before>
-    <after>
+    </given>
+    <then>
         <deleted>
             <t_gallery_cover gallery_id="12" file_name="c.jpg"/>
         </deleted>
@@ -19,5 +19,5 @@
             <t_gallery_cover gallery_id="12" file_name="a.jpg"/>
             <t_gallery_cover gallery_id="12" file_name="b.jpg" />
         </added>
-    </after>
+    </then>
 </dataset>

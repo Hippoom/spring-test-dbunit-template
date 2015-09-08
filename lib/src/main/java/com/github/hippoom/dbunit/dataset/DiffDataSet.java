@@ -1,6 +1,5 @@
 package com.github.hippoom.dbunit.dataset;
 
-import com.github.hippoom.dbunit.spring.BeforeResourceLoader;
 import com.github.springtestdbunit.dataset.FlatXmlDataSetLoader;
 import org.dbunit.dataset.IDataSet;
 import org.dom4j.Attribute;
@@ -11,29 +10,32 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.dom4j.tree.DefaultElement;
+import org.springframework.core.io.ClassRelativeResourceLoader;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
 
 import static java.lang.String.format;
 
 public class DiffDataSet extends FlatXmlDataSetLoader {
+
+    private static final String GIVEN = "given";
+    private static final String THEN = "then";
+    private static final String UNDER_SCORE = "_";
+
     protected IDataSet createDataSet(Resource resource) throws Exception {
 
         final String description = resource.getDescription();
         final org.dom4j.Document document = loadDocument(resource);
 
-        if (description.startsWith("before")) {
+        if (GIVEN.equals(description)) {
 
 
             org.dom4j.Element before = getBeforeElement(document);
@@ -44,10 +46,10 @@ public class DiffDataSet extends FlatXmlDataSetLoader {
 
             addTableRowsInBeforeTagToDataSet(dataset, before);
 
-            final String path = getFilePathFor(resource, "_before");
+            final String path = getFilePathFor(resource, suffixWith(GIVEN));
             writeXml(path, beforeXml);
             return super.createDataSet(new FileSystemResource(path));
-        } else if (description.startsWith("after")) {
+        } else if (THEN.equals(description)) {
 
             org.dom4j.Element before = getBeforeElement(document);
 
@@ -63,7 +65,7 @@ public class DiffDataSet extends FlatXmlDataSetLoader {
 
             modifyTablesRowsAccordingToModifiedTagToDataSet(dataset, document);
 
-            final String path = getFilePathFor(resource, "_after");
+            final String path = getFilePathFor(resource, suffixWith(THEN));
             writeXml(path, afterXml);
             return super.createDataSet(new FileSystemResource(path));
         } else
@@ -74,8 +76,12 @@ public class DiffDataSet extends FlatXmlDataSetLoader {
 
     }
 
+    private String suffixWith(String text) {
+        return UNDER_SCORE + text;
+    }
+
     private void modifyTablesRowsAccordingToModifiedTagToDataSet(Element dataset, org.dom4j.Document document) {
-        List modifiedMaybe = document.selectNodes("/dataset/after/modified");
+        List modifiedMaybe = document.selectNodes("/dataset/" + THEN + "/modified");
 
         for (Object o : modifiedMaybe) {
             Element modified = (Element) o;
@@ -114,7 +120,7 @@ public class DiffDataSet extends FlatXmlDataSetLoader {
     }
 
     private void removeTableRowsInDeletedTagFromDataSet(Element dataset, org.dom4j.Document document) {
-        List deletedMaybe = document.selectNodes("/dataset/after/deleted");
+        List deletedMaybe = document.selectNodes("/dataset/" + THEN + "/deleted");
 
         for (Object o : deletedMaybe) {
             Element deleted = (Element) o;
@@ -145,7 +151,7 @@ public class DiffDataSet extends FlatXmlDataSetLoader {
     }
 
     private void addTableRowsInAddedToDataSet(org.dom4j.Element dataset, org.dom4j.Document document) {
-        List addedMaybe = document.selectNodes("/dataset/after/added");
+        List addedMaybe = document.selectNodes("/dataset/" + THEN + "/added");
         for (Object a : addedMaybe) {
             org.dom4j.Element added = (Element) a;
             for (Object t : added.elements()) {
@@ -165,7 +171,7 @@ public class DiffDataSet extends FlatXmlDataSetLoader {
     }
 
     private org.dom4j.Element getBeforeElement(org.dom4j.Document document) {
-        List beforeNodes = document.selectNodes("/dataset/before");
+        List beforeNodes = document.selectNodes("/dataset/" + GIVEN);
 
         return (org.dom4j.Element) beforeNodes.get(0);
     }
@@ -206,12 +212,116 @@ public class DiffDataSet extends FlatXmlDataSetLoader {
     }
 
     /**
-     * Gets the {@link ResourceLoader} that will be used to load the dataset {@link Resource}s.
+     * Gets the {@link org.springframework.core.io.ResourceLoader} that will be used to load the dataset {@link Resource}s.
      *
      * @param testClass The class under test
      * @return a resource loader
      */
-    protected ResourceLoader getResourceLoader(Class<?> testClass) {
-        return new BeforeResourceLoader(testClass);
+    protected org.springframework.core.io.ResourceLoader getResourceLoader(Class<?> testClass) {
+        return new ResourceLoader(testClass);
+    }
+
+    /**
+     * With the built-in {@link Resource}, it is not possible to differ
+     * <p/>
+     * the incoming resource is used for setup or verification.
+     * <p/>
+     * With this customized {@link org.springframework.core.io.ResourceLoader}, one can inject some meta data to the resource
+     * <p/>
+     * and get it by using {@link Resource#getDescription()}
+     */
+    public static class ResourceLoader extends ClassRelativeResourceLoader {
+
+
+        private static final String COLON = ":";
+        private static final String SETUP_META = GIVEN + COLON;
+        private static final String VERIFICATION_META = THEN + COLON;
+
+        public ResourceLoader(Class<?> clazz) {
+            super(clazz);
+        }
+
+        @Override
+        public Resource getResource(String location) {
+            if (location.startsWith(SETUP_META)) {
+                return new ResourceWrapper(super.getResource(location.substring((SETUP_META.length()))), GIVEN);
+            } else if (location.startsWith(VERIFICATION_META)) {
+                return new ResourceWrapper(super.getResource(location.substring((VERIFICATION_META.length()))), THEN);
+            } else {
+                return super.getResource(location);
+            }
+        }
+
+    }
+
+    public static class ResourceWrapper implements Resource {
+        private String description;
+        private Resource target;
+
+        public ResourceWrapper(Resource target, String description) {
+            this.description = description;
+            this.target = target;
+        }
+
+        @Override
+        public boolean exists() {
+            return target.exists();
+        }
+
+        @Override
+        public boolean isReadable() {
+            return target.isReadable();
+        }
+
+        @Override
+        public boolean isOpen() {
+            return target.isOpen();
+        }
+
+        @Override
+        public URL getURL() throws IOException {
+            return target.getURL();
+        }
+
+        @Override
+        public URI getURI() throws IOException {
+            return target.getURI();
+        }
+
+        @Override
+        public File getFile() throws IOException {
+            return target.getFile();
+        }
+
+        @Override
+        public long contentLength() throws IOException {
+            return target.contentLength();
+        }
+
+        @Override
+        public long lastModified() throws IOException {
+            return target.lastModified();
+        }
+
+        @Override
+        public Resource createRelative(String relativePath) throws IOException {
+            return target.createRelative(relativePath);
+        }
+
+        @Override
+        public String getFilename() {
+            return target.getFilename();
+        }
+
+        @Override
+        public String getDescription() {
+            return description;
+        }
+
+
+        @Override
+        public InputStream getInputStream() throws IOException {
+            return target.getInputStream();
+        }
     }
 }

@@ -1,11 +1,11 @@
 <dataset>
-    <before>
+    <given>
         <t_event id="1" name="event_save_prototype" status="A"/>
-    </before>
+    </given>
 
-    <after>
+    <then>
         <added>
             <t_event id="2" name="event_save_subject" status="A"/>
         </added>
-    </after>
+    </then>
 </dataset>
