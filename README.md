@@ -205,7 +205,7 @@ e.g.
     <then>
         <modified pk="id"> <!--use ',' as delimiter with multiple columns-->
             <t_event id="12" status="D"/>
-        </deleted>
+        </modified>
     </then>
 </dataset>
 
